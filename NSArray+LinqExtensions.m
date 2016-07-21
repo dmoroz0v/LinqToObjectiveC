@@ -138,12 +138,9 @@
 - (id)linq_aggregate:(LINQAccumulator)accumulator
 {
     id aggregate = nil;
-    for (id item in self) {
-        if (aggregate == nil) {
-            aggregate = item;
-        } else {
-            aggregate = accumulator(item, aggregate);
-        }
+    for (id item in self)
+    {
+        aggregate = accumulator(item, aggregate);
     }
     return aggregate;
 }

@@ -29,6 +29,9 @@
                             return [NSString stringWithFormat:@"%@=%@", key, value];
                         }]
                         linq_aggregate:^id(id item, id aggregate) {
+                            if (aggregate == nil) {
+                                return item;
+                            }
                             return [NSString stringWithFormat:@"%@&%@", item, aggregate];
                         }];
     

@@ -244,6 +244,9 @@
     NSArray* names = @[@"bill", @"bob", @"brian"];
     
     id csv = [names linq_aggregate:^id(id item, id aggregate) {
+        if (aggregate == nil) {
+            return item;
+        }
         return [NSString stringWithFormat:@"%@, %@", aggregate, item];
     }];
     
@@ -252,10 +255,24 @@
     NSArray* numbers = @[@22, @45, @33];
     
     id biggestNumber = [numbers linq_aggregate:^id(id item, id aggregate) {
+        if (aggregate == nil) {
+            return item;
+        }
         return [item compare:aggregate] == NSOrderedDescending ? item : aggregate;
     }];
     
     XCTAssertEqualObjects(biggestNumber, @45);
+
+    NSArray<NSArray *> *arrayOfArrays = @[@[@1, @2], @[@1, @2, @3], @[@1]];
+
+    NSNumber *totalObjectsCount = [arrayOfArrays linq_aggregate:^id(NSArray *item, NSNumber *aggregate) {
+        if (aggregate == nil) {
+            return @(item.count);
+        }
+        return @(aggregate.unsignedIntegerValue + item.count);
+    }];
+
+    XCTAssertEqualObjects(totalObjectsCount, @6);
 }
 
 - (void)testFirstOrNil
